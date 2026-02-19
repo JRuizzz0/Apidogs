@@ -21,7 +21,7 @@ public class RouterHandler implements HttpHandler {
             return;
         }
 
-        String response = "404 - Ruta no encontrada AAAAAAAAAAAAAAAAAAA";
+        String response = "404 - Ruta no encontrada";
         exchange.sendResponseHeaders(404, response.length());
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());

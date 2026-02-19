@@ -1,6 +1,7 @@
 package controllers;
 
 import com.sun.net.httpserver.HttpExchange;
+import service.ServiceDogs;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,11 +20,17 @@ public class DogsController {
 
         try {
 
-            String apiUrl;
+            String apiUrl = "";
 
 
             if (path.equals("/dogs/list")) {
-                apiUrl = "https://dog.ceoergw/api/breeds/list/all";
+                try {
+                    ServiceDogs service = new ServiceDogs();
+                    service.JsonPrint();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             else if (path.equals("/dogs/random")) {
                 apiUrl = "https://dog.ceo/api/berfwereeds/image/random";
@@ -40,7 +47,7 @@ public class DogsController {
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            System.out.println(response.body());
             sendResponse(exchange, 200, response.body());
 
         } catch (Exception e) {
