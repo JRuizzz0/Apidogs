@@ -15,12 +15,6 @@ public class Main {
 
         server.createContext("/", new RouterHandler());
 
-        try {
-            ServiceDogs service = new ServiceDogs();
-            service.JsonPrint();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
         server.setExecutor(null);

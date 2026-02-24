@@ -23,20 +23,45 @@ public class DogsController {
             String apiUrl = "";
 
 
-            if (path.equals("/dogs/list")) {
+            if (path.equals("/dogs/list/razas")) {
                 try {
                     ServiceDogs service = new ServiceDogs();
-                    service.JsonPrint();
+                    service.JsonPrintrazas(exchange);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
-            else if (path.equals("/dogs/random")) {
-                apiUrl = "https://dog.ceo/api/berfwereeds/image/random";
+            else if (path.equals("/dogs/list/nosubrazas")) {
+                try {
+                    ServiceDogs service = new ServiceDogs();
+                    service.JsonPrintNoSubrazas(exchange);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            else if (path.equals("/dogs/list/subrazas")) {
+                try {
+                    ServiceDogs service = new ServiceDogs();
+                    service.JsonPrintSubrazas(exchange);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            else if (path.equals("/dogs/list/imagenes")) {
+                try {
+                    ServiceDogs service = new ServiceDogs();
+                    service.JsonPrintImagenes(exchange);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             else {
-                sendResponse(exchange, 404, "Endpoint dogs no válido");
+                ServiceDogs service = new ServiceDogs();
+
+                service.sendResponse(exchange, 404, "Endpoint dogs no válido");
                 return;
             }
 
@@ -54,8 +79,7 @@ public class DogsController {
             sendResponse(exchange, 500, "Error llamando a la API dogs");
         }
     }
-
-    private void sendResponse(HttpExchange exchange, int status, String body) throws IOException {
+    public void sendResponse(HttpExchange exchange, int status, String body) throws IOException {
 
         exchange.getResponseHeaders().add("Content-Type", "application/json");
 
