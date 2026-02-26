@@ -120,19 +120,20 @@ public class ServiceDogs {
         sendResponse(exchange, 200, "razas");
     }
 
-    public void JsonPrintImagenes(HttpExchange exchange) throws IOException, InterruptedException {
-        String finalPath = exchange.getRequestURI().getPath().split("/")[0];
-        JsonObject jsonRaiz = fetchApiData("https://dog.ceo/api/breeds/image/random/" + finalPath);
-        JsonArray imageUrls = jsonRaiz.getAsJsonArray("message");
-
-        JsonArray resultado = new JsonArray();
-        for (JsonElement element : imageUrls) {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("imagen", element.getAsString());
-            resultado.add(obj);
+    public void JsonPrintImagenes (HttpExchange exchange) throws IOException, InterruptedException {
+        String path = exchange.getRequestURI().getPath();
+        if (path.startsWith("/dogs/list/imagenes")) {
+            String [] n = path.split("/");
+            int numero = Integer.parseInt(n[4]);
+            if (numero > 50 || numero < 1) {
+                sendResponse(exchange, 404, "El número debe de ser mayor a 0 y menor o igual a 50");
+            }
+            else {
+                JsonObject jsonRaiz = fetchApiData(ALL_BREEDS_URL);
+                HttpResponse<String> responses = fetchApiData("https://dog.ceo/api/breeds/image/random/" + numero);
+                sendResponse(exchange, 200, responses.body());
+            }
         }
-
-
     }
 
     public void sendResponse(HttpExchange exchange, int status, String body) throws IOException {
