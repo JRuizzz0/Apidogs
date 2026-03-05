@@ -22,9 +22,8 @@ public class RouterHandler implements HttpHandler {
 
 
     /**
-     *
-     * @param exchange the exchange containing the request from the
-     *                 client and used to send the response
+     *  Metodo handle que maneja el exchange
+     * @param exchange encapsula la petición del cliente y la respuesta del servidor.
      * @throws IOException excepcion input output
      */
     @Override
@@ -55,8 +54,7 @@ public class RouterHandler implements HttpHandler {
 
     /**
      * Metodo error404
-     * @param exchange the exchange containing the request from the
-     *      *                 client and used to send the response
+     * @param exchange encapsula la petición del cliente y la respuesta del servidor.
      * @throws IOException error input output
      */
     public static void error404(HttpExchange exchange) throws IOException {
@@ -69,8 +67,7 @@ public class RouterHandler implements HttpHandler {
 
     /**
      * metodo error 500 server not init
-     * @param exchange the exchange containing the request from the
-     *      *                 client and used to send the response
+     * @param exchange encapsula la petición del cliente y la respuesta del servidor.
      * @throws IOException error input output
      */
     public static void error500(HttpExchange exchange) throws IOException {
@@ -83,8 +80,7 @@ public class RouterHandler implements HttpHandler {
 
     /**
      * Metodo error 503
-     * @param exchange the exchange containing the request from the
-     *      *                 client and used to send the response
+     * @param exchange encapsula la petición del cliente y la respuesta del servidor.
      * @throws IOException error input output
      */
     public static void error503(HttpExchange exchange) throws IOException {

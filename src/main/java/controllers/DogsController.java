@@ -3,8 +3,13 @@ package controllers;
 import com.sun.net.httpserver.HttpExchange;
 import service.ServiceDogs;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,13 +17,12 @@ import java.net.http.HttpResponse;
 
 public class DogsController {
 
+
     //Instancia HttpClient
     private final HttpClient client = HttpClient.newHttpClient();
-
     /**
      * Metodo para manejar los endpoints
-     * @param exchange the exchange containing the request from the
-     *      *                 client and used to send the response
+     * @param exchange encapsula la petición del cliente y la respuesta del servidor.
      * @throws IOException error Input Output
      */
     public void handle(HttpExchange exchange) throws IOException {
@@ -39,9 +43,16 @@ public class DogsController {
                 service.JsonPrintSubrazas(exchange);
                 return;
             }
-            if (path.equals("/dogs/list/imagenes")) { //endpoint mostrar las imagenes random
+            if (path.startsWith("/dogs/list/imagenes/")) {//endpoint mostrar n imagenes random
                 service.JsonPrintImagenes(exchange);
             }
+            if (path.startsWith("/dogs/raza/imagenes/")) {//endpoint mostrar todas las imagenes de una raza
+                service.JsonPrintImagenesPorRaza(exchange);
+            }
+            if (path.startsWith("/dogs/compare/imagenes/")) {//endpoint para mostra 2 fotos de 2 perros dif
+                service.JsonPrintDosRazas(exchange);
+            }
+
             else {
                 service.sendResponse(exchange, 404, "Endpoint dogs no válido"); //error server not found
                 return;
@@ -64,12 +75,12 @@ public class DogsController {
     }
 
     /**
+     * Envía una respuesta HTTP al cliente especificando que el contenido es de tipo JSON.
      *
-     * @param exchange the exchange containing the request from the
-     *                client and used to send the response
-     * @param status  status error ej:200
-     * @param body    atributo string que guarda el "cuerpo" al enviar la respuesta
-     * @throws IOException error input output
+     * @param exchange  encapsula la petición del cliente y la respuesta del servidor.
+     * @param status   El código de estado HTTP que se enviará al cliente.
+     * @param body     El cuerpo de la respuesta en formato de texto que será enviado.
+     * @throws IOException Si ocurre un error de entrada/salida al configurar las cabeceras o al escribir en el flujo de respuesta.
      */
     public void sendResponse(HttpExchange exchange, int status, String body) throws IOException {
         exchange.getResponseHeaders().add("Content-Type", "application/json");
